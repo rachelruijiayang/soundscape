@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
+var Playlist = require('./playlist');
 
-module.exports = new mongoose.Schema({
+var userSchema = {
 	profile: {
 		username: {
 			type: String,
@@ -12,9 +13,12 @@ module.exports = new mongoose.Schema({
 			match: /^http:\/\//i
 		},
 		bio: { type: String },
-		playlists: [{ type: String }]	// playlist IDs
+		playlists: [ Playlist.playlistSchema ]	// playlist IDs
 	},
 	auth: {
 		oauth: { type: String, required: true }
 	}
-});
+};
+
+module.exports = new mongoose.Schema(userSchema);
+module.exports.userSchema = userSchema;

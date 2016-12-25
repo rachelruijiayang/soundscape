@@ -1,9 +1,13 @@
 var mongoose = require('mongoose');
+var Audio = require('./audio');
 
-module.exports = new mongoose.Schema({
+var playlistSchema = {
 	playlist_id: { type: String, required: true },
 	playlist_title: { type: String, required: true },
 	playlist_audio: [{ type: String }],
-	username: { type: String, required: true },
-	description: { type: String }
-});
+	description: { type: String },
+	audios: [ Audio.audioSchema ]
+};
+
+module.exports = new mongoose.Schema(playlistSchema);
+module.exports.playlistSchema = playlistSchema;

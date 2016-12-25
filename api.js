@@ -15,6 +15,7 @@ module.exports = function(wagner) {
   /********* AUDIO API *********/
 
   // Create
+  
 
   // Read
 
@@ -37,7 +38,31 @@ module.exports = function(wagner) {
   // Create
 
   // Read
+  api.get('/user/:username', wagner.invoke(function(User) {
+  	return function(req, res) {
+  		User.findOne({ _username: req.params.username }, function(error, 
+  			user) {
+  			if (error) {
+  				return res.
+  					status(status.INTERNAL_SERVER_ERROR).
+  					json({ error: error.toString() });
+  			}
+  			if (!user) {
+  				return res.
+  					status(status.NOT_FOUND).
+  					json({ error: 'Not found' });
+  			}
+  			/* send back the returned user as json */
+  			res.json({ user: user })
+  		});
+  	};
+  }));
 
   // Update
 
   // Delete
+
+  /* return the Express router so higher-level apps can include the router
+  using app.use() */
+  return api;
+};

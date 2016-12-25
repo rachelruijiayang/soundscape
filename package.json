@@ -9,14 +9,17 @@
 	    "mongoose": "4.0.3",
 	    "passport": "0.2.2",
 	    "passport-facebook": "2.0.0",
-	    "superagent": "1.2.0",
 	    "underscore": "1.5.2",
 	    "wagner-core": "0.1.0"
 	},
 	"devDependencies": {
-		"mocha": "2.2.4"
+		"gulp": "3.8.11",
+		"gulp-mocha": "2.0.1",
+		"mocha": "2.2.4",
+	    "superagent": "1.2.0"
 	},
 	"scripts": {
-		"test": "mocha test.js"
+		"test": "mocha test.js",
+		"watch": "gulp watch"
 	}
 }

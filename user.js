@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 
 var userSchema = {
 	profile: {
-		_username: { type: String, required: true, lowercase: true },
+		username: { type: String, required: true },
 		picture: { type: String, match: /^http:\/\//i },
 		bio: { type: String },
 		playlists: [{
@@ -19,7 +19,7 @@ var userSchema = {
 			}]
 		}]
 	},
-	data: {
+	auth: {
 		oauth: { type: String, required: true }
 	}
 };

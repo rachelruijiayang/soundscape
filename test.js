@@ -4,7 +4,7 @@ var status = require("http-status");
 var superagent = require("superagent");
 var wagner = require("wagner-core");
 
-var URL_ROOT = "http://localhost:3000";
+var URL_ROOT = "http://localhost:3000/";
 
 describe("User API", function() {
 	var server;
@@ -15,25 +15,16 @@ describe("User API", function() {
 
 		// Bootstrap server
 		models = require("./models")(wagner);
-	    
-	    // Make User model available in tests
-	    User = models.User;
-
-	    app.user(function(req, res, next) { 
-	    	User.findOne({}, function(error, user) {
-	    		assert.ifError(error);
-	    		requ.user = user;
-	    		next();
-	    	});
-	    });
-		
 		app.use(require("./api")(wagner));
 
 		server = app.listen(3000);
-	}); 
+	    
+	    // Make User model available in tests
+	    User = models.User;
+	});
 
 	after(function() {
-		// Shut the server down when we"re done
+		// Shut the server down when we're done
 		server.close();
 	});
 
@@ -51,7 +42,7 @@ describe("User API", function() {
 		// user 1: ruijia
 		{
 			profile: {
-				_username: "ruijia",
+				username: "ruijia",
 				picture: "http://pbs.twimg.com/profile_images/550304223036854272/Wwmwuh2t.png",
 				bio: "Hi, I like music!",
 				playlists: [
@@ -109,7 +100,7 @@ describe("User API", function() {
 		// user 2: carolyn
 		{
 			profile: {
-				_username: "carolyn",
+				username: "carolyn",
 				picture: "http://media.istockphoto.com/photos/portrait-of-a-young-chinese-girl-picture-id599888980",
 				bio: "i am carolyn yang",
 				playlists: [
@@ -141,12 +132,16 @@ describe("User API", function() {
 				oauth: "invalid"
 			}
 		}]
+
+		User.create(users, function(error) {
+			assert.ifError(error);
+			done();
+		});
 	});
 
-	User.create(users, function(error) {
-		assert.ifError(error);
-		done();
-	})
+	after(function() {
+		server.close();
+	});
 
 	
 	/*****************************************************************************

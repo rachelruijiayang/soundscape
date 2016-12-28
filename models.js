@@ -5,7 +5,7 @@ module.exports = function(wagner) {
   mongoose.connect('mongodb://localhost:27017/test');
 
   var User =
-    mongoose.model('User', require('./user'), 'users');
+    mongoose.model('User', require('./user'), 'soundscapeusers');
 
   var models = {
     User: User

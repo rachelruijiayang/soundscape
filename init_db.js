@@ -4,7 +4,7 @@ var status = require("http-status");
 var superagent = require("superagent");
 var wagner = require("wagner-core");
 
-var users = [
+var soundscapeusers = [
 // user 1: ruijia
 {
 	profile: {
@@ -102,11 +102,11 @@ var users = [
 models = require("./models")(wagner);
 var User = models.User;
 
-User.create(users, function(error) {
+User.create(soundscapeusers, function(error) {
 	if(error) {
 		return handleError(err);
 	}
 	else {
-		console.log("successfully added users");
+		console.log("successfully added soundscapeusers");
 	}
 });

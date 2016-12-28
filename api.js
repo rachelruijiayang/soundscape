@@ -13,11 +13,12 @@ module.exports = function(wagner) {
   */
   /*************** read ***************/
   // list all users
-  /*
-  api.get("/allusers", function(req, res) {
-    res.send("Got a GET request for a list of all users");
-  });
-  */
+  api.get("/allusers", wagner.invoke(function(User) {
+    return function(req, res) {
+      console.log("Got a GET request for a list of all users");
+      User.find({},handleMany.bind(null, "allusers", res));
+    };
+  }));
 
   // route that lists a specified user
   api.get("/user/:uname", wagner.invoke(function(User) {

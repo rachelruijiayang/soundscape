@@ -129,6 +129,7 @@ request.put(
 */
 
 // EDIT USER PLAYLIST
+/*
 request.put(
 	"http://localhost:3000/api/user/ruijia/playlist/nyc_songs/edit",
 	{ json: {
@@ -153,5 +154,20 @@ request.put(
             console.log(body)
         }
         console.log("done");
+    }
+);
+*/
+
+// DELETE USER PLAYLIST
+request.delete(
+	"http://localhost:3000/api/user/ruijia/playlist/chinese_songs/edit",
+	{ json: {
+		toDelete: {
+			playlist_id: "nyc_songs",
+		}
+	}},
+	function (error, response, body) {
+        console.log(response.statusCode);
+        console.log(body);
     }
 );

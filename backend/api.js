@@ -90,18 +90,19 @@ module.exports = function(wagner) {
       console.log("Got a GET request for user " + req.params.user + "'s playlist " +
         req.params.playlist_id);
       // find the user whose playlists array contains a playlist with the title req.params.playlist_id
-      User.find({ "prof.username": req.params.user }).
+      User.findOne({ "prof.username": req.params.user }).
            where("prof.playlists.playlist_id").equals(req.params.playlist_id). 
            exec(function(err, resUser) {
-            if (err) {
+            console.log(resUser);
+            if (err || resUser == null) {
               return res.status(status.INTERNAL_SERVER_ERROR);
             }
-            for (var i = 0; i < resUser[0].prof.playlists.length; i++) {
-              console.log(resUser[0].prof.playlists[i].playlist_id);
+            for (var i = 0; i < resUser.prof.playlists.length; i++) {
+              console.log(resUser.prof.playlists[i].playlist_id);
               console.log("req.params.playlist_id = " + req.params.playlist_id);
-              if ((resUser[0].prof.playlists[i].playlist_id) == req.params.playlist_id) {
+              if ((resUser.prof.playlists[i].playlist_id) == req.params.playlist_id) {
                 console.log("found playlist that matches " + req.params.playlist_id);
-                return res.json(resUser[0].prof.playlists[i]);
+                return res.json(resUser.prof.playlists[i]);
               } else {
                 console.log("failed to find matching playlist");
               }
@@ -144,12 +145,25 @@ module.exports = function(wagner) {
   }));
   
   /*************** delete a playlist ***************/
-  /*
-  api.put("/user/:user/playlist/:playlist_id/edit", function(req, res) {
-    res.send("Got a DELETE request for user " + req.params.user + "'s playlist " +
-      req.params.playlist_id);
-  });
-  */
+  api.delete("/user/:user/playlist/:playlist_id/edit", wagner.invoke(function(User) {
+    return function(req, res) {
+      console.log("Got a DELETE request for user " + req.params.user + "'s playlist " +
+        req.params.playlist_id);
+      User.update(
+        {"prof.username": req.params.user}, 
+        { $pull: { "prof.playlists": {"playlist_id": req.params.playlist_id } }},
+        function(err, result) {
+          if (err) {
+            console.log(err);
+          }
+          else if (!err) {
+            console.log(result);
+          }
+          return res.json(result);
+        });
+    };
+  }));
+
   /*****************************************************************************
   ******************************** AUDIO LEVEL *********************************
   ******************************************************************************/

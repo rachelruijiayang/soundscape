@@ -10,7 +10,7 @@ var app = express();
 bind middleware functions to an instance of the app object by using
 the app.use() and app.METHOD() functions
 */
-app.use("/", require("./api")(wagner));
+app.use("/api/", require("./api")(wagner));
 
 // see AngularJS Services and HTTP
 app.use(express.static("../"));

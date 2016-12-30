@@ -31,7 +31,7 @@ module.exports = function(wagner) {
   api.get("/user/:user", wagner.invoke(function(User) {
     return function(req, res) {
       console.log("Got a GET request for the prof of user " + req.params.user + ".");
-      User.find({ "prof.username": req.params.user },
+      User.findOne({ "prof.username": req.params.user },
         handleOne.bind(null, 'user', res));
     };
   }));

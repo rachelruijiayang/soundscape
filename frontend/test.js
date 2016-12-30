@@ -1,0 +1,2 @@
+describe('Nav Bar', function() {
+});

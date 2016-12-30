@@ -1,16 +1,23 @@
+var bodyparser = require('body-parser');
 var express = require("express");
 var status = require("http-status");
 
 module.exports = function(wagner) {
   var api = express.Router();
+
+  api.use(bodyparser.json());
   
   /*************** create the users above ***************/
   // Create (POST)
-  /*
-  api.post("/signup", wagner.invoke(function(req, res) {
-    res.send("Got a POST request for a user");
-  });
-  */
+  api.post("/signup", wagner.invoke(function(User) {
+    return function(req, res) {
+      console.log("Got a POST request for a user");
+      console.log(JSON.stringify(req.body));
+      var newuser = new User(req.body);
+      newuser.save(handleOne.bind(null, "newuser", res));
+    };
+  }));
+  
   /*************** read ***************/
   // list all users
   api.get("/allusers", wagner.invoke(function(User) {
@@ -20,46 +27,64 @@ module.exports = function(wagner) {
     };
   }));
 
-  // route that lists a specified user
-  api.get("/user/:uname", wagner.invoke(function(User) {
+  // route that gets info about a specified user
+  api.get("/user/:user", wagner.invoke(function(User) {
     return function(req, res) {
-      console.log("Got a GET request for the profile of user " + req.params.uname + ".");
-      User.find({ "profile.username": req.params.uname }, 
+      console.log("Got a GET request for the prof of user " + req.params.user + ".");
+      User.find({ "prof.username": req.params.user }, 
         handleOne.bind(null, 'user', res));
     };
   }));
 
   /*************** edit a user ***************/
   // edit user metadata
-  /*
-  api.put("/user/:user/edit", function(req, res) {
-    res.send("Got a PUT request for user " + req.params.user + ".");
-  });
-  */
+  api.put("/user/:user/edit", wagner.invoke(function(User) {
+    return function(req, res) {
+      console.log("Got a PUT request for user " + req.params.user + ".");
+      User.findOneAndUpdate({ "prof.username": req.params.user }, { "prof.picture": req.body.picture, 
+        "prof.bio": req.body.bio }, {}, function(err, updatedUser) {
+        if (err) {
+          return res.status(status.INTERNAL_SERVER_ERROR);
+        }
+        return res.json(updatedUser);
+        });
+    };
+  }));
+
   /*************** delete a user ***************/
-  /*
-  api.delete("/user/:user/edit", function(req, res) {
-    res.send("Got a DELETE request for user " + req.params.user + ".");
-  });
-  */
+  api.delete("/user/:user/edit", wagner.invoke(function(User) {
+    return function(req, res) {
+      console.log("Got a DELETE request for user " + req.params.user + ".");
+      User.remove({ "prof.username": req.params.user }, function(err) {
+        res.send((err == null) ? { msg: "" } : { msg: err });
+      });
+    };
+  }));
+
   /*****************************************************************************
   ******************************* PLAYLIST LEVEL *******************************
   ******************************************************************************/
   
   /*************** create a playlist ***************/
-  /*
-  api.post("/user/:user/create_playlist", function(req, res) {
-    res.send("Got a POST request from user " + req.params.user + "to create a new playlist.");
-  });
+  // http://stackoverflow.com/questions/18884840/adding-a-new-array-element-to-a-json-object
+  /*api.post("/user/:user/create_playlist", wagner.invoke(function(User) {
+    return function(req, res) {
+      console.log("Got a POST request from user " + req.params.user + "to create a new playlist.");
+      User.find({ "prof.username": req.params.user }, function(err, result) {
+
+      })
+    };
+  }));
   */
+
   /*************** read a playlist ***************/
   // read a specific user's playlist
-  /*
-  api.get("/user/:user/playlist/:playlist_title", function(req, res) {
-    res.send("Got a GET request for user " + req.params.user + "'s playlist " +
+  /*api.get("/user/:user/playlist/:playlist_title", function(req, res) {
+    console.log("Got a GET request for user " + req.params.user + "'s playlist " +
       req.params.playlist_title);
+    User.find({ "prof.username": req.params.user})
   });
-  */
+*/
   // read all playlists
   /*
   api.get("/allplaylists", function(req, res) {

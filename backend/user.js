@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var userSchema = {
-	profile: {
+	prof: {
 		username: { type: String, required: true },
 		picture: { type: String, match: /^http:\/\//i },
 		bio: { type: String },

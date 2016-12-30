@@ -41,7 +41,7 @@ describe("User API", function() {
 		var users = [
 		// user 1: ruijia
 		{
-			profile: {
+			prof: {
 				username: "ruijia",
 				picture: "http://pbs.twimg.com/profile_images/550304223036854272/Wwmwuh2t.png",
 				bio: "Hi, I like music!",
@@ -99,7 +99,7 @@ describe("User API", function() {
 		},
 		// user 2: carolyn
 		{
-			profile: {
+			prof: {
 				username: "carolyn",
 				picture: "http://media.istockphoto.com/photos/portrait-of-a-young-chinese-girl-picture-id599888980",
 				bio: "i am carolyn yang",

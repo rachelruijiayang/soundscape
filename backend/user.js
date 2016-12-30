@@ -6,6 +6,7 @@ var userSchema = {
 		picture: { type: String, match: /^http:\/\//i },
 		bio: { type: String },
 		playlists: [{
+			playlist_id: { type: String, required: true },
 			playlist_title: { type: String, required: true },
 			playlist_description: { type: String },
 			audios: [{

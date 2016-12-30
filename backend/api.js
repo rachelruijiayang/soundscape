@@ -31,7 +31,7 @@ module.exports = function(wagner) {
   api.get("/user/:user", wagner.invoke(function(User) {
     return function(req, res) {
       console.log("Got a GET request for the prof of user " + req.params.user + ".");
-      User.find({ "prof.username": req.params.user }, 
+      User.find({ "prof.username": req.params.user },
         handleOne.bind(null, 'user', res));
     };
   }));
@@ -67,24 +67,49 @@ module.exports = function(wagner) {
   
   /*************** create a playlist ***************/
   // http://stackoverflow.com/questions/18884840/adding-a-new-array-element-to-a-json-object
-  /*api.post("/user/:user/create_playlist", wagner.invoke(function(User) {
+  api.put("/user/:user/create_playlist", wagner.invoke(function(User) {
     return function(req, res) {
-      console.log("Got a POST request from user " + req.params.user + "to create a new playlist.");
-      User.find({ "prof.username": req.params.user }, function(err, result) {
-
-      })
+      console.log("Got a POST request from user " + req.params.user + " to create a new playlist.");
+      User.findOneAndUpdate(
+        { "prof.username": req.params.user },
+        { $push: {"prof.playlists" : req.body.newPlaylist }},
+        {},
+        function(err, updatedUser) {
+        if (err) {
+          return res.status(status.INTERNAL_SERVER_ERROR);
+        }
+        return res.json(updatedUser.prof.playlists);
+      });
     };
   }));
-  */
 
   /*************** read a playlist ***************/
   // read a specific user's playlist
-  /*api.get("/user/:user/playlist/:playlist_title", function(req, res) {
-    console.log("Got a GET request for user " + req.params.user + "'s playlist " +
-      req.params.playlist_title);
-    User.find({ "prof.username": req.params.user})
-  });
-*/
+  api.get("/user/:user/playlist/:playlist_id", wagner.invoke(function(User) {
+    return function(req, res) {
+      console.log("Got a GET request for user " + req.params.user + "'s playlist " +
+        req.params.playlist_id);
+      // find the user whose playlists array contains a playlist with the title req.params.playlist_id
+      User.find({ "prof.username": req.params.user }).
+           where("prof.playlists.playlist_id").equals(req.params.playlist_id). 
+           exec(function(err, resUser) {
+            if (err) {
+              return res.status(status.INTERNAL_SERVER_ERROR);
+            }
+            for (var i = 0; i < resUser[0].prof.playlists.length; i++) {
+              console.log(resUser[0].prof.playlists[i].playlist_id);
+              console.log("req.params.playlist_id = " + req.params.playlist_id);
+              if ((resUser[0].prof.playlists[i].playlist_id) == req.params.playlist_id) {
+                console.log("found playlist that matches " + req.params.playlist_id);
+                return res.json(resUser[0].prof.playlists[i]);
+              } else {
+                console.log("failed to find matching playlist");
+              }
+            }
+           });
+    };
+  }));
+
   // read all playlists
   /*
   api.get("/allplaylists", function(req, res) {
@@ -93,16 +118,16 @@ module.exports = function(wagner) {
   */
   /*************** edit a playlist ***************/
   // edit playlist metadata
-  /*api.put("/user/:user/playlist/:playlist_title/edit", function(req, res) {
+  /*api.put("/user/:user/playlist/:playlist_id/edit", function(req, res) {
     res.send("Got a PUT request for user " + req.params.user + "'s playlist " +
-      req.params.playlist_title);
+      req.params.playlist_id);
   });
   */
   /*************** delete a playlist ***************/
   /*
-  api.put("/user/:user/playlist/:playlist_title/edit", function(req, res) {
+  api.put("/user/:user/playlist/:playlist_id/edit", function(req, res) {
     res.send("Got a DELETE request for user " + req.params.user + "'s playlist " +
-      req.params.playlist_title);
+      req.params.playlist_id);
   });
   */
   /*****************************************************************************
@@ -110,27 +135,28 @@ module.exports = function(wagner) {
   ******************************************************************************/
   // add a song to a playlist (create)
   /*
-  api.post("/user/:user/playlist/:playlist_title/edit", function(req, res) {
+  api.post("/user/:user/playlist/:playlist_id/edit", function(req, res) {
     res.send("Got a CREATE request for an audio file in user " + req.params.user + "'s playlist " +
-      req.params.playlist_title);
+      req.params.playlist_id);
   });
   */
   // open up a song and read its description  (read) - N/A
 
   // edit song metadata (update)
   /*
-  api.put("/user/:user/playlist/:playlist_title/edit", function(req, res) {
+  api.put("/user/:user/playlist/:playlist_id/edit", function(req, res) {
     res.send("Got a PUT request for an audio file in user " + req.params.user + "'s playlist " +
-      req.params.playlist_title);
+      req.params.playlist_id);
   });
   */
   // delete a song from a playlist (delete)
   /*
-  api.delete("/user/:user/playlist/:playlist_title/edit", function(req, res) {
+  api.delete("/user/:user/playlist/:playlist_id/edit", function(req, res) {
     res.send("Got a DELETE request for an audio file in user " + req.params.user + "'s playlist " +
-      req.params.playlist_title);
+      req.params.playlist_id);
   });
   */
+
   /* return the Express router so higher-level apps can include the router
   using app.use() */
   return api;

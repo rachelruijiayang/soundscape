@@ -13,6 +13,7 @@ var soundscapeusers = [
 		bio: "Hi, I like music!",
 		playlists: [
 		{
+			playlist_id: "chinese_songs",
 			playlist_title: "chinese songs",
 			playlist_description: "a collection of chinese songs",
 			audios: 
@@ -36,6 +37,7 @@ var soundscapeusers = [
 			}]
 		},
 		{
+			playlist_id: "nyc_songs",
 			playlist_title: "nyc songs",
 			playlist_description: "around the big apple",
 			audios: 
@@ -71,6 +73,7 @@ var soundscapeusers = [
 		bio: "i am carolyn yang",
 		playlists: [
 		{
+			playlist_id: "carolyn_playlist_1",
 			playlist_title: "carolyn playlist 1",
 			playlist_description: "this is carolyn's playlist 1",
 			audios: 

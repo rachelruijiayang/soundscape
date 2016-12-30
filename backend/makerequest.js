@@ -1,6 +1,7 @@
 var request = require('request');
 
 // CREATE NEW USER
+/*
 request.post(
     'http://localhost:3000/api/signup',
     { json: {
@@ -63,66 +64,7 @@ request.post(
 	auth: {
 		oauth: "hello1"
 	}
-} },
-    /*{ json: {
-	prof: {
-		username: "jordi",
-		picture: "https://upload.wikimedia.org/wikipedia/en/2/22/Charlie_Brown.png",
-		bio: "It has been said that astronomy is a humbling and character-building experience.",
-		playlists: [
-		{
-			playlist_id: "paul_mccartney",
-			playlist_title: "paul mccartney",
-			playlist_description: "some silly love songs",
-			audios: 
-			[{
-				audio_title: "silly love songs",
-				audio_file: "http://wavgy.yt-downloader.org/download.php?id=b40d3789ad4040c6badc471f440c9c00",
-				location: {
-					lat: "43.0",
-					lon: "-74.0"
-				},
-				audio_description: "this is a silly love song"
-			},
-			{
-				audio_title: "uncle albert/admiral halsey",
-				audio_file: "http://wavgy.yt-downloader.org/download.php?id=b40d3789ad4040c6badc471f440c9c00",
-				location: {
-					lat: "41.0",
-					lon: "-75.0"
-				},
-				audio_description: "ok"
-			}]
-		},
-		{
-			playlist_id: "christmas",
-			playlist_title: "christmas",
-			playlist_description: "ok",
-			audios: 
-			[{
-				audio_title: "blue christmas",
-				audio_file: "http://wavgy.yt-downloader.org/download.php?id=b40d3789ad4040c6badc471f440c9c00",
-				location: {
-					lat: "42.4",
-					lon: "-74.0"
-				},
-				audio_description: ""
-			},
-			{
-				audio_title: "baby it's cold outside",
-				audio_file: "http://wavgy.yt-downloader.org/download.php?id=b40d3789ad4040c6badc471f440c9c00",
-				location: {
-					lat: "41.0",
-					lon: "-75.0"
-				},
-				audio_description: ""
-			}]
-		}]
-	},
-	auth: {
-		oauth: "hello1"
-	}
-} }*/
+	} }
     function (error, response, body) {
     	console.log(response.statusCode);
         if (!error && response.statusCode == 200) {
@@ -130,11 +72,12 @@ request.post(
         }
     }
 );
+*/
 
 /*
 // EDIT USER
 request.put(
-    'http://localhost:3000/user/juliana/edit',
+    'http://localhost:3000/api/user/juliana/edit',
     { json: {
 		picture: "http://stockfresh.com/files/p/pressmaster/m/42/103752_stock-photo-happy-winner.jpg",
 		bio: "even newer bio",
@@ -150,9 +93,10 @@ request.put(
 // ADD NEW PLAYLIST TO USER
 /*
 request.put(
-	'http://localhost:3000/user/juliana/create_playlist',
+	'http://localhost:3000/api/user/juliana/create_playlist',
     { json: {
     	newPlaylist: {
+    		playlist_id: "love_songs_2"
 			playlist_title: "love songs #2",
 			playlist_description: "for when you're missing someone",
 			audios: 
@@ -183,3 +127,31 @@ request.put(
     }
 );
 */
+
+// EDIT USER PLAYLIST
+request.put(
+	"http://localhost:3000/api/user/ruijia/playlist/nyc_songs/edit",
+	{ json: {
+		updatedPlaylist: {
+			playlist_id: "nyc_songs",
+			playlist_title: "nyc songs",
+			playlist_description: "last new descrip",
+			audios: [{
+				audio_title: "new york new york",
+				audio_file: "www.google.com",
+				location: {
+					lat: "41",
+					lon: "-20"
+				},
+				audio_description: "an ok song"
+			}]
+
+		}
+	}},
+	function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log(body)
+        }
+        console.log("done");
+    }
+);

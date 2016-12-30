@@ -118,11 +118,31 @@ module.exports = function(wagner) {
   */
   /*************** edit a playlist ***************/
   // edit playlist metadata
-  /*api.put("/user/:user/playlist/:playlist_id/edit", function(req, res) {
-    res.send("Got a PUT request for user " + req.params.user + "'s playlist " +
-      req.params.playlist_id);
-  });
-  */
+  api.put("/user/:user/playlist/:playlist_id/edit", wagner.invoke(function(User) {
+    return function(req, res) {
+      console.log("Got a PUT request for user " + req.params.user + "'s playlist " +
+        req.params.playlist_id);
+      User.update(
+        {"prof.username": req.params.user, "prof.playlists.playlist_id": req.params.playlist_id}, 
+        {$set: {
+            "prof.playlists.$.playlist_id": req.body.updatedPlaylist.playlist_id,
+            "prof.playlists.$.playlist_title": req.body.updatedPlaylist.playlist_title,
+            "prof.playlists.$.playlist_description": req.body.updatedPlaylist.playlist_description,
+            "prof.playlists.$.audios": req.body.updatedPlaylist.audios
+          }
+        },
+        function(err, result) {
+          if (err) {
+            console.log(err);
+          }
+          else if (!err) {
+            console.log(result);
+          }
+          return res.json(result);
+        });
+    };
+  }));
+  
   /*************** delete a playlist ***************/
   /*
   api.put("/user/:user/playlist/:playlist_id/edit", function(req, res) {

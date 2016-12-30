@@ -29,5 +29,10 @@ app.config(function($routeProvider) {
   $routeProvider.
     when("/user/:user", {
       template: '<user-profile></user-profile>'
+    }).
+    /*
+    when("/user/:user/playlist/:playlist", {
+    	template: "<playlist-view></playlist-view>"
     });
+*/
 });

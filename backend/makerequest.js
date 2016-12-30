@@ -2,12 +2,14 @@ var request = require('request');
 
 // CREATE NEW USER
 request.post(
-    'http://localhost:3000/signup',
+    'http://localhost:3000/api/signup',
     { json: {
 	prof: {
-		username: "connie",
-		picture: "http://stockfresh.com/files/p/pressmaster/m/42/103752_stock-photo-happy-winner.jpg",
-		bio: "Hi, my name is connie!",
+		username: "jordi",
+		picture: "http://canyouactually.com/wp-content/uploads/charlie-snoopy.jpg",
+		// but the URL https://s-media-cache-ak0.pinimg.com/originals/60/f6/b2/60f6b2b59177878584d427cf9cd7cad0.jpg causes an 
+		// internal server error?
+		bio: "It has been said that astronomy is a humbling and character-building experience",
 		playlists: [
 		{
 			playlist_id: "chinese_songs",
@@ -62,7 +64,67 @@ request.post(
 		oauth: "hello1"
 	}
 } },
+    /*{ json: {
+	prof: {
+		username: "jordi",
+		picture: "https://upload.wikimedia.org/wikipedia/en/2/22/Charlie_Brown.png",
+		bio: "It has been said that astronomy is a humbling and character-building experience.",
+		playlists: [
+		{
+			playlist_id: "paul_mccartney",
+			playlist_title: "paul mccartney",
+			playlist_description: "some silly love songs",
+			audios: 
+			[{
+				audio_title: "silly love songs",
+				audio_file: "http://wavgy.yt-downloader.org/download.php?id=b40d3789ad4040c6badc471f440c9c00",
+				location: {
+					lat: "43.0",
+					lon: "-74.0"
+				},
+				audio_description: "this is a silly love song"
+			},
+			{
+				audio_title: "uncle albert/admiral halsey",
+				audio_file: "http://wavgy.yt-downloader.org/download.php?id=b40d3789ad4040c6badc471f440c9c00",
+				location: {
+					lat: "41.0",
+					lon: "-75.0"
+				},
+				audio_description: "ok"
+			}]
+		},
+		{
+			playlist_id: "christmas",
+			playlist_title: "christmas",
+			playlist_description: "ok",
+			audios: 
+			[{
+				audio_title: "blue christmas",
+				audio_file: "http://wavgy.yt-downloader.org/download.php?id=b40d3789ad4040c6badc471f440c9c00",
+				location: {
+					lat: "42.4",
+					lon: "-74.0"
+				},
+				audio_description: ""
+			},
+			{
+				audio_title: "baby it's cold outside",
+				audio_file: "http://wavgy.yt-downloader.org/download.php?id=b40d3789ad4040c6badc471f440c9c00",
+				location: {
+					lat: "41.0",
+					lon: "-75.0"
+				},
+				audio_description: ""
+			}]
+		}]
+	},
+	auth: {
+		oauth: "hello1"
+	}
+} }*/
     function (error, response, body) {
+    	console.log(response.statusCode);
         if (!error && response.statusCode == 200) {
             console.log(body)
         }

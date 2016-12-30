@@ -12,5 +12,8 @@ the app.use() and app.METHOD() functions
 */
 app.use("/", require("./api")(wagner));
 
+// see AngularJS Services and HTTP
+app.use(express.static("../"));
+
 app.listen(3000);
 console.log("Server listening on port 3000!");

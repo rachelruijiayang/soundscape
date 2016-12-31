@@ -6,6 +6,20 @@
     <div class="details-right">
       <h1>{{user.prof.username}}</h1>
       <div>{{user.prof.bio}}</div>
+      <br />
+    </div>
+    <div class="playlist-list">
+      <h3>Playlists:</h3>
+      <div class="playlist" ng-repeat="playlist in user.prof.playlists">
+        <div class="playlist-name">
+          <a ng-href="#/user/{{user.prof.username}}/playlist/{{playlist.playlist_id}}">
+            {{playlist.playlist_title}}
+          </a>
+        </div>
+        <div class="playlist-description">
+          {{playlist.description}}
+        </div>
+      </div>
     </div>
     <div style="clear: both"></div>
   </div>

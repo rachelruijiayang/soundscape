@@ -4,3 +4,10 @@ exports.userProfile = function() {
     templateUrl: '/frontend/templates/user_profile.html'
   };
 };
+
+exports.playlistView = function() {
+  return {
+    controller: 'PlaylistViewController',
+    templateUrl: '/frontend/templates/playlist_view.html'
+  };
+};

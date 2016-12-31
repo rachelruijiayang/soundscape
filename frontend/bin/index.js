@@ -20,6 +20,28 @@ exports.UserProfileController = function($scope, $routeParams, $http) {
   }, 0);
 };
 
+/* sends HTTP request to the REST API to get data about a playlist */
+exports.PlaylistViewController = function($scope, $routeParams, $http) {
+  console.log($routeParams);
+  // routeParams service = map from route parameters in the AngularJS 
+  // URL to the route parameter values
+  var encodedUser = encodeURIComponent($routeParams.user);
+  var encodedPlaylist = encodeURIComponent($routeParams.playlist);
+
+  $http.
+    get("/api/user/" + encodedUser + "/playlist/" + encodedPlaylist).
+    success(function(data) {
+      console.log("success");
+      console.log(data);
+      $scope.playlist = data;
+
+    });
+
+  setTimeout(function() {
+    $scope.$emit('PlaylistViewController');
+  }, 0);
+};
+
 },{}],2:[function(require,module,exports){
 exports.userProfile = function() {
   return {
@@ -28,6 +50,12 @@ exports.userProfile = function() {
   };
 };
 
+exports.playlistView = function() {
+  return {
+    controller: 'PlaylistViewController',
+    templateUrl: '/frontend/templates/playlist_view.html'
+  };
+};
 },{}],3:[function(require,module,exports){
 // main entry point for javascript part of soundscape application
 
@@ -60,6 +88,9 @@ app.config(function($routeProvider) {
   $routeProvider.
     when("/user/:user", {
       template: '<user-profile></user-profile>'
+    }).
+    when("/user/:user/playlist/:playlist", {
+    	template: "<playlist-view></playlist-view>"
     });
 });
 

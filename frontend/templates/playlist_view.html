@@ -1,0 +1,20 @@
+<div class="playlist-view">
+  <div class="playlist-view-content">
+    <div class="playlist-info">
+      <h1>{{playlist.playlist_title}}</h1>
+      <div>{{playlist.playlist_description}}</div>
+      <br />
+    </div>
+    <div class="audios-section">
+      <h3>Songs:</h3>
+      <div class="audio-list" ng-repeat="audio in playlist.audios">
+        <div class="indiv-audio">
+          <h4>{{audio.audio_title}}<h5>
+          <h6>({{audio.audio_description}})
+          ({{audio.location.lat}}, {{audio.location.lon}})</h6>
+          <br />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

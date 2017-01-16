@@ -2,7 +2,7 @@ var request = require('request');
 
 // CREATE NEW USER
 request.post(
-    'http://localhost:3000/api/signup',
+    'http://localhost:8080/api/signup',
     { json: {
 	prof: {
 		username: "mozart",

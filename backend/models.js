@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 var _ = require('underscore');
+var database = require("../../resources/database.js");
 
 module.exports = function(wagner) {
-  mongoose.connect('mongodb://localhost:27017/test');
+  mongoose.connect(database.productionUrl);
 
   var User =
     mongoose.model('User', require('./user'), 'soundscapeusers');
